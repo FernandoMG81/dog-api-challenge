@@ -17,11 +17,17 @@ export const DogProvider = ({ children }: AuxProps) => {
   useEffect(() => {
     const fetchBreeds = async () => {
       try {
-        if(dataLoaded) return
+        if (dataLoaded) return
         const data = await getAllBreedsWithImg()
 
         setBreeds(data)
         setDataLoaded(true)
+
+        const localStorageFavorites = localStorage.getItem('favorites');
+        if (localStorageFavorites) {
+          const favorites = JSON.parse(localStorageFavorites) 
+          setFavorites(favorites)
+        }
       } catch (error) {
         console.error('Error al obtener las razas de perros', error)
       }

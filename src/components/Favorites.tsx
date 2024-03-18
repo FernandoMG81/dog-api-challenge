@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import { ActiveImage } from "../utils/types"
 import { DogContext } from "../context/DogContext"
 import { Gallery } from "./Gallery"
+import { SaveOnLocalStorage } from "../helpers/SaveOnLocalStorage"
 
 
 export const Favorites = () => {
@@ -10,8 +11,9 @@ export const Favorites = () => {
   const context = useContext(DogContext)
 
   const { favorites, setFavorites} = context!
-
- const images = favorites.map(img => img.imgURL) as string[]
+  
+  const images = favorites.map(img => img.imgURL) as string[]
+  
  
   
   const handleClick = (imageURL: string) => {
@@ -28,6 +30,7 @@ export const Favorites = () => {
     e.stopPropagation();
     const updatedFavorites = favorites.filter(favorite => favorite.imgURL !== url);
     setFavorites(updatedFavorites);
+    SaveOnLocalStorage('favorites', updatedFavorites)
   };
   
   return (

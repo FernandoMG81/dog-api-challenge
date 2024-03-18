@@ -4,6 +4,7 @@ import { ActiveImage, BreedInfo, Favorite } from "../utils/types"
 import { DogContext } from "../context/DogContext"
 import { useGallery } from "../hooks/useGallery"
 import { Gallery } from "./Gallery"
+import { SaveOnLocalStorage } from "../helpers/SaveOnLocalStorage"
 
 
 export const BreedList = () => {
@@ -68,6 +69,7 @@ export const BreedList = () => {
     if (existingFavorite) {
       const updatedFavorites = favorites.filter(favorite => favorite.imgURL !== url);
       setFavorites(updatedFavorites);
+      SaveOnLocalStorage('favorites', updatedFavorites)
     } else {
       const newFavorite: Favorite = {
         name: breed!,
@@ -76,6 +78,7 @@ export const BreedList = () => {
       };
       const updatedFavorites = [...favorites, newFavorite];
       setFavorites(updatedFavorites);
+      SaveOnLocalStorage('favorites', updatedFavorites)
     }
   };
   

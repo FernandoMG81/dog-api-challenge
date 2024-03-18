@@ -1,16 +1,11 @@
 export const SaveOnLocalStorage = (key, element) => {
-  let elementos = JSON.parse(localStorage.getItem(key))
+  try {
+    let elementos = element;
+    localStorage.setItem(key, JSON.stringify(elementos));
 
-  if(Array.isArray(elementos))
-  {
-      elementos.push(element)
+    return element;
+  } catch (error) {
+    console.error('Error al guardar en el almacenamiento local:', error);
+    throw error;
   }
-  else
-  {
-     elementos = [element]
-  }
-
-  localStorage.setItem(key, JSON.stringify(elementos))
-
-  return element
-}
+};
