@@ -1,17 +1,22 @@
 import { Link } from 'react-router-dom'
 import { BreedSkeleton } from './BreedSkeleton'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { DogContext } from '../context/DogContext'
 import { BreedInfo } from '../utils/types';
 
 
 export const Home = () => {
+
+  const [searchValue, setSearchValue] = useState<string>('')
   
   const context = useContext(DogContext)
   let breeds: BreedInfo[] | null = null
   if(context){
     breeds = context.breeds
   }
+
+
+  const filterBreeds = breeds?.filter( dog => dog.name.includes(searchValue))
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -29,13 +34,15 @@ export const Home = () => {
             className="w-full max-w-md px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-md focus:outline-none focus:ring focus:ring-primary dark:focus:ring-primary"
             placeholder="Search breeds..."
             type="text"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
         </div>
 
         {/* List of all dogs */}
         <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
           {
-            breeds && breeds.length > 0 ? breeds.map((breed, index) => (
+            filterBreeds && filterBreeds.length > 0 ? filterBreeds.map((breed, index) => (
 
               <div key={index} className="flex items-center justify-center gap-2 ml-5">
                 <Link to={breed.name} className="font-medium flex-1 text-center transition-transform transform hover:scale-105">
